@@ -1,0 +1,45 @@
+Q1:  What is axios?
+
+Axios is a promise-based HTTP library that lets developers make requests to either their own or a third-party server to fetch data.
+Axios is a JavaScript library that allows you to make HTTP requests to APIs from the browser or from the server. It is designed to be easy to use and lightweight, and it provides several features that make it well-suited for modern web development.
+
+Some of the key features of Axios include:
+
+Automatic transformation of request and response data: Axios can automatically transform JSON data to and from JavaScript objects, making it easier to work with data in your application.
+
+Support for cancelling requests: Axios allows you to cancel in-flight requests, which can be useful for optimizing performance and preventing unnecessary network activity.
+
+Built-in error handling: Axios includes built-in error handling to help you debug and handle errors in your application.
+
+Support for request and response interceptors: Axios allows you to define functions that can intercept and modify requests and responses before they are sent or received.
+
+Support for promises: Axios uses promises to make it easier to work with asynchronous data, allowing you to use async/await syntax in your code.
+
+Axios is widely used in modern web development and is supported in most modern browsers. It is often used with popular JavaScript frameworks such as React and Vue.js.
+
+Q2: Why do we need headers any idea?
+
+Axios is an HTTP client library that is used to send asynchronous HTTP requests such as POST , GET , and DELETE to REST endpoints (mainly APIs). Some of these requests, such as GET and POST , can include headers, which provide an additional source of information for each API call
+HTTP headers let the client and the server pass additional information with an HTTP request or response. Headers can be used to provide information about the request context, such as the format of the body, authentication credentials, and preferred languages.
+
+In the case of the Axios library, headers can be used to specify the format of the request and response data, as well as to provide authentication credentials and other information. For example, you might set the Content-Type header to specify the format of the request body, or the Authorization header to provide authentication credentials.
+
+Here's an example of how you might use headers with Axios:
+
+Copy code
+axios.post('/api/create-user', {
+  name: 'John',
+  email: 'john@example.com'
+}, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <TOKEN>'
+  }
+});
+In this example, the Content-Type header is set to application/json to specify that the request body is in JSON format, and the Authorization header is set to provide an authentication token.
+
+Headers can be useful for providing additional information with an HTTP request or response, and are often used in conjunction with the Axios library to make HTTP requests in JavaScript.
+
+Q3: What are the common problems faced when you make network calls and what should you do to solve it.
+
+https://www.youtube.com/watch?v=_hqjCFeqOMI&list=PL4dunL3FOEk3fs4qIB1ZHkVp-nY_QR-o6&index=2&ab_channel=Sharpener
