@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <title>Name and Email Form</title>
+</head>
+
+<body>
+    <h1>Name and Email Form</h1>
+    <form id="form">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script>
+        // get form element
+        const form = document.getElementById('form');
+
+        // add submit event listener to form
+        form.addEventListener('submit', (event) => {
+            // prevent default form submission behavior
+            event.preventDefault();
+
+            // get name and email input values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // create delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Delete';
+            deleteButton.addEventListener('click', () => {
+
+                // remove data from local storage on delete button click
+                // localStorage.removeItem(email);
+
+                // axios.delete('https://crudcrud.com/api/0d3a755b12004bd0badf7f9cdca130d3/appointmentData', {
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     data: {
+                //         id: data._id,
+                //     },
+                // });
+
+                // remove delete button and name and email elements from page
+                deleteButton.parentNode.removeChild(deleteButton);
+                nameElement.parentNode.removeChild(nameElement);
+                emailElement.parentNode.removeChild(emailElement);
+            });
+
+            // create new elements to display name and email
+            const nameElement = document.createElement('p');
+            nameElement.innerHTML = `Name: ${name}`;
+            const emailElement = document.createElement('p');
+            emailElement.innerHTML = `Email: ${email}`;
+
+            // add name, email, and delete button to page
+            form.parentNode.appendChild(nameElement);
+            form.parentNode.appendChild(emailElement);
+            form.parentNode.appendChild(deleteButton);
+
+
+            // creating object for updating
+            const obj = { name, email };
+
+            // save data to local storage
+            // localStorage.setItem(email, JSON.stringify(obj));
+
+            axios.post('https://crudcrud.com/api/94222abe07ab4b2ca1666fcaebf9a3fc/appointmentData', obj)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        });
+    </script>
+</body>
+
+</html>
