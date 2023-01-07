@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <title>Name and Email Form</title>
+</head>
+
+<body>
+    <h1>Name and Email Form</h1>
+    <form id="form">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script>
+
+        // Display Old data present in crudcrud AXIOS.GET.(On Refresh)
+        axios.get("https://crudcrud.com/api/3b40c87e2d134b18b8eb6a16870b757f/appointmentData")
+            .then(response => {
+
+                for (let i = 0; i < response.data.length; i++) {
+                    const item = response.data[i];
+
+                    // Create a new element to display the item
+                    const itemElement = document.createElement("div");
+                    itemElement.innerHTML = `Name: ${item.name}<br>Email: ${item.email}`;
+
+                    // Append the item element to the page
+                    document.body.appendChild(itemElement);
+
+                    //  create delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = "Delete"
+                    itemElement.parentNode.appendChild(deleteButton)
+
+                    deleteButton.addEventListener('click', () => {
+                        // console.log(item);
+
+                        axios.delete(`https://crudcrud.com/api/3b40c87e2d134b18b8eb6a16870b757f/appointmentData/${item._id}`)
+                            .then(response => console.log(response))
+                            .catch(err => console.log(err))
+
+                        // remove delete button and name and email elements from page
+                        deleteButton.parentNode.removeChild(deleteButton);
+                        itemElement.parentNode.removeChild(itemElement);
+                    });
+
+                }
+
+            })
+            .catch(error => {
+                // If there was an error, you can catch it here
+                console.error(error);
+            });
+
+
+
+        // get form element
+        const form = document.getElementById('form');
+
+        // add submit event listener to form
+        form.addEventListener('submit', (event) => {
+            // prevent default form submission behavior
+            event.preventDefault();
+
+            // get name and email input values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // create delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Delete';
+
+            deleteButton.addEventListener('click', () => {
+
+                // remove delete button and name and email elements from page
+                deleteButton.parentNode.removeChild(deleteButton);
+                displayElement.parentNode.removeChild(displayElement);
+            });
+
+            // create new elements to display name and email
+            const displayElement = document.createElement('div');
+            displayElement.innerHTML = `Name: ${name}<br>Email: ${email}`;
+
+            // add name, email, and delete button to page
+            form.parentNode.appendChild(displayElement);
+            form.parentNode.appendChild(deleteButton);
+
+            // creating object for updating
+            const obj = { name, email };
+
+            // Post Data in Crudcrud
+            axios.post('https://crudcrud.com/api/3b40c87e2d134b18b8eb6a16870b757f/appointmentData', obj)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        });
+    </script>
+</body>
+
+</html>
