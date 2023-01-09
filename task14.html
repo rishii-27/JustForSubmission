@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <title>User Appointments</title>
+</head>
+
+<body>
+    <h1>User Appointments</h1>
+    <form id="details">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    <h3>List of Users</h3>
+    <ul id="listUsers"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script>
+        const details = document.getElementById('details')
+
+        const ul = document.querySelector('ul')
+
+        details.addEventListener('submit', store)
+        function store(e) {
+            e.preventDefault();
+            const name = event.target.name.value
+            const email = event.target.email.value
+            let users = {
+                name,
+                email
+            }
+            // localStorage.setItem(users.email,JSON.stringify(users))
+            //store data to server
+            axios.post('https://crudcrud.com/api/59116097e54940b1a457caf31bea7b9f/appointment', users
+            ).then(res => showData(res.data)).catch(err => console.log(err))
+
+
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // const localStoragekeys=Object.keys(localStorage)
+            // const  localStorageObj=localStorage;
+            // for(var i=0;i<localStoragekeys.length;i++)
+            // {
+            //     const key=localStoragekeys[i];
+            //     const userDetailsString =localStorageObj[key];
+            //     const userDetailsobj=JSON.parse(userDetailsString);
+            //     showData(userDetailsobj)
+            // }
+            // show data from crud crud
+            const crudObj = axios.get('https://crudcrud.com/api/59116097e54940b1a457caf31bea7b9f/appointment')
+            crudObj.then(res => {
+                for (let i = 0; i < res.data.length; i++) {
+                    showData(res.data[i]);
+                }
+            }).catch(err => console.log(err))
+
+            //  for(var i=0;i<crudKey.length;i++)
+            //     {
+            //     const key=crudKey[i];
+            //     const userDetailsString =crudObj[key];
+            //     const userDetailsobj=JSON.parse(userDetailsString);
+            //     console.log("hello")
+
+            //  }b
+        })
+
+        function showData(user) {
+            const parentNode = document.getElementById('listUsers');
+
+            const childHTML = `<li id=${user._id}> ${user.name} - ${user.email}
+    <button onclick=deleteuser('${user._id}')>Delete</button>
+    <button onclick=editUser('${user.email}','${user.name}','${user._id}')>Edit</button>
+    </li>`
+            parentNode.innerHTML = parentNode.innerHTML + childHTML
+            //for clear inpusts
+            document.getElementById('email').value = ""
+            document.getElementById('name').value = "";
+        }
+        function deleteuser(userId) {
+            axios.delete(`https://crudcrud.com/api/59116097e54940b1a457caf31bea7b9f/appointment/${userId}`).then(res => {
+                removeOnScreem(userId)
+            })
+
+        }
+
+        function removeOnScreem(emailId) {
+            const parentNode = document.getElementById('listUsers')
+            const childNode = document.getElementById(emailId)
+            parentNode.removeChild(childNode)
+
+        }
+        function editUser(emailId, name, userId) {
+            document.getElementById('email').value = emailId
+            document.getElementById('name').value = name;
+            //to ramove wrong details
+            deleteuser(userId)
+
+        }
+    </script>
+</body>
+
+</html>
