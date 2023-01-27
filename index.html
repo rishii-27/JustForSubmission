@@ -1,44 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <title>Axios Crash Course</title>
-  </head>
-  <body>
-    <div class="container my-5">
-      <div class="text-center">
-        <h1 class="display-4 text-center mb-3">Axios Crash Course</h1>
-        <button class="btn btn-primary my-3" id="get">GET</button>
-        <button class="btn btn-info" id="post">POST</button>
-        <button class="btn btn-warning" id="update">PUT/PATCH</button>
-        <button class="btn btn-danger" id="delete">DELETE</button>
-        <button class="btn btn-secondary" id="sim">Sim Requests</button>
-        <button class="btn btn-secondary" id="headers">
-          Custom Headers
-        </button>
-        <button class="btn btn-secondary" id="transform">
-          Transform
-        </button>
-        <button class="btn btn-secondary" id="error">
-          Error Handling
-        </button>
-        <button class="btn btn-secondary" id="cancel">
-          Cancel
-        </button>
-      </div>
-      <hr />
-      <div id="res"></div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-    <script src="/main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Admin Page</title>
+</head>
+
+<body>
+    <h1>Items Page</h1>
+    <form id="form">
+        <label for="product">Product</label>
+        <input type="text" name="product" id="product"><br><br>
+
+        <label for="price">Price</label>
+        <input type="number" name="price" id="price"><br><br>
+
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            <option value="foodItem">Food Item</option>
+            <option value="electronic">Electronics</option>
+            <option value="skinCare">Skin Care</option>
+        </select><br><br>
+
+        <button type="submit">Submit</button><br><br>
+
+        <h2>Food Items</h2>
+        <p id="food"></p>
+        <h2>Electronics</h2>
+        <p id="electronics"></p>
+        <h2>Skin Care</h2>
+        <p id="skin"></p>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+
+    <script>
+        const form = document.getElementById('form');
+        const food = document.getElementById('food');
+        const electronics = document.getElementById('electronics');
+        const skin = document.getElementById('skin');
+
+        // Get existing data from API on page load
+        axios.get('https://crudcrud.com/api/87e15e72eaad4a24af9b11ab7062cbe5/sellerData')
+            .then(res => {
+                const items = res.data;
+                console.log(res.data);
+                items.forEach(item => {
+
+                    // console.log(item);
+
+                    // Delete Button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = 'Delete'
+
+                    // Display Content
+                    const displayElement = document.createElement('div');
+                    displayElement.innerHTML = `Product <b>${item.product}</b> and Price is <b>${item.price}</b> `;
+                    displayElement.appendChild(deleteButton)
+
+                    if (item.category == "foodItem") {
+                        food.appendChild(displayElement)
+                    } else if (item.category == "electronic") {
+                        electronics.appendChild(displayElement)
+                    } else {
+                        skin.appendChild(displayElement)
+                    }
+
+                    deleteButton.addEventListener('click', () => {
+                        axios.delete(`https://crudcrud.com/api/87e15e72eaad4a24af9b11ab7062cbe5/sellerData/${item._id}`)
+                        deleteButton.remove(displayElement)
+                        displayElement.remove(displayElement)
+                    })
+
+                });
+            })
+            .catch(err => console.log(err))
+
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+
+            const product = document.getElementById('product').value;
+            const price = document.getElementById('price').value;
+            const category = document.getElementById('category').value;
+
+            // console.log(category);
+
+            // Delete Button
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Delete'
+
+            // Display Content
+            const displayElement = document.createElement('div');
+            displayElement.innerHTML = `Product <b>${product}</b> and Price is <b>${price}</b> `;
+            displayElement.appendChild(deleteButton)
+
+            if (category == "foodItem") {
+                food.appendChild(displayElement)
+            } else if (category == "electronic") {
+                electronics.appendChild(displayElement)
+            } else {
+                skin.appendChild(displayElement)
+            }
+
+
+            const obj = { product, price, category }
+            // console.log(obj)
+
+            axios.post('https://crudcrud.com/api/87e15e72eaad4a24af9b11ab7062cbe5/sellerData', obj)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+
+
+            deleteButton.addEventListener('click', () => {
+                // axios.delete(`https://crudcrud.com/api/87e15e72eaad4a24af9b11ab7062cbe5/sellerData/${_id}`)
+                deleteButton.remove(displayElement)
+                displayElement.remove(displayElement)
+            })
+        })
+    </script>
+
+
+
+
+
+    <script>
+    //     const form = document.getElementById('form');
+    //     const food = document.getElementById('food');
+    //     const electronics = document.getElementById('electronics');
+    //     const skin = document.getElementById('skin');
+
+
+    //     form.addEventListener('submit', event => {
+    //         event.preventDefault();
+
+    //         const product = document.getElementById('product').value;
+    //         const price = document.getElementById('price').value;
+    //         const category = document.getElementById('category').value;
+
+    //         // console.log(category);
+
+    //         // Delete Button
+    //         const deleteButton = document.createElement('button');
+    //         deleteButton.innerHTML = 'Delete'
+
+    //         // Display Content
+    //         const displayElement = document.createElement('div');
+    //         displayElement.innerHTML = `Product <b>${product}</b> and Price is <b>${price}</b> `;
+    //         displayElement.appendChild(deleteButton)
+
+    //         if (category == "foodItem") {
+    //             food.appendChild(displayElement)
+    //         } else if (category == "electronic") {
+    //             electronics.appendChild(displayElement)
+    //         } else {
+    //             skin.appendChild(displayElement)
+    //         }
+
+    //         deleteButton.addEventListener('click', () => {
+    //             deleteButton.remove(displayElement)
+    //             displayElement.remove(displayElement)
+    //         })
+
+    //         const obj = { product, price, category }
+    //         // console.log(obj)
+
+    //         axios.post('https://crudcrud.com/api/813f3a708eef44dcb3a0896dd7e41c1d/sellerData', obj)
+    //             .then(res => console.log(res))
+    //             .catch(err => console.log(err))
+    //     })
+    </script>
+</body>
+
 </html>
