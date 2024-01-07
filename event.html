@@ -1,0 +1,56 @@
+<!-- **********e.preventDefault()********** -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://code.jquery.com/jquery-git.js">
+  </script>
+</head>
+
+<body>
+  <a id="first" href="www.geeksforgeeks.com">
+    GeeksForGeeks
+  </a>
+
+  <script>
+    $("#first").click(function () {
+      event.preventDefault();
+      alert("Event prevented, Can't go to link.");
+    });
+  </script>
+</body>
+
+</html>
+
+<!-- **********e.stopPropogation()********** -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-git.js">
+  </script>
+</head>
+
+<body>
+  <div class="first" onclick="functionFirst()">
+    <button onclick="functionSecond()">
+      Button
+    </button>
+  </div>
+
+  <script>
+    function functionSecond() {
+      event.stopPropagation();
+      alert("button hello");
+    }
+    function functionFirst() {
+      alert("div hello");
+    }
+  </script>
+</body>
+
+</html>
